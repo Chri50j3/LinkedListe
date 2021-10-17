@@ -11,18 +11,37 @@ public class linkedListe{
 
     Scanner s = new Scanner(System.in);
     LinkedList liste = new LinkedList(Integer.parseInt(args[0]));
+    boolean break_ = true;
+    String text = "";
 
     for(int i = 1; i < args.length ; i++){
       liste.add(Integer.parseInt(args[i]));
     }
     liste.udskriv();
+    while(break_){
+      text = s.nextLine();
+      switch(text){
+        case "Sorter":
+          liste.sorter(args.length);
+          break;
 
-    if(s.nextLine().equals("Stor")){
-      liste.findStor(args.length);
+        case "Stor":
+          liste.find(args.length, true);
+          break;
+
+        case "Lille":
+          liste.find(args.length, false);
+          break;
+
+        case "break":
+          break_ = false;
+          break;
+
+        case "Insert":
+          liste.insert(s.nextInt(),s.nextInt());
+          break;
+      }
     }
-
-    liste.insert(s.nextInt(),s.nextInt());
-
   }
 
   public static class Node{
@@ -70,16 +89,42 @@ public class linkedListe{
       n1.print();
     }
 
-    void findStor(int L){
+    void find(int L, boolean findStor){
       Node nu = n1;
-      int stor = 0;
+      int tal = nu.value;
+      if(findStor){
+        tal = 0;}
       for(int i = 0 ; i < L; i++){
-        if(nu.value > stor){
-          stor = nu.value;
+        if(findStor && nu.value > tal){
+          tal = nu.value;
+        }
+        if(!findStor && nu.value < tal){
+          tal = nu.value;
         }
         nu = nu.next;
       }
-      System.out.println("Stoerste tal er " + stor);
+      System.out.println("Tal er " + tal);
     }
+
+    void sorter(int length){
+      Node lavPlads = n1;
+      Node lavPladsNr = n1;
+      int tempValue;
+
+      for (int t = 0 ; t <length ; t++) {
+        lavPlads = lavPladsNr;
+        for(int i = t ; i <length ; i++){
+          if(lavPladsNr.value > lavPlads.value){
+            tempValue = lavPladsNr.value;
+            lavPladsNr.value = lavPlads.value;
+            lavPlads.value = tempValue;
+          }
+          lavPlads = lavPlads.next;
+        }
+        lavPladsNr = lavPladsNr.next;
+      }
+      udskriv();
+    }
+
   }
 }
